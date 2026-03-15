@@ -1,0 +1,241 @@
+/* Cursor override — must be outside all Tailwind layers */
+@media (pointer: fine) {
+  html, body, * { cursor: none !important; }
+}
+@media (pointer: coarse) {
+  html, body, * { cursor: auto !important; }
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root,
+  [data-theme="dark"] {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 3%;
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 3%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 40%;
+    --muted-foreground: 0 0% 60%;
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 0 0% 100%;
+    --radius: 0.75rem;
+
+    --theme-bg: #000000;
+    --theme-surface: rgba(255,255,255,0.02);
+    --theme-border: rgba(255,255,255,0.10);
+    --theme-border-hover: rgba(255,255,255,0.20);
+    --theme-text: #ffffff;
+    --theme-text-muted: rgba(255,255,255,0.50);
+    --theme-text-dim: rgba(255,255,255,0.30);
+    --theme-btn-primary-bg: #ffffff;
+    --theme-btn-primary-text: #000000;
+    --theme-scrollbar: #1a1a1a;
+    --theme-scrollbar-hover: #2a2a2a;
+    --theme-grid: rgba(255,255,255,0.1);
+    --theme-blob: rgba(255,255,255,0.10);
+  }
+
+  [data-theme="light"] {
+    --background: 0 0% 97%;
+    --foreground: 0 0% 5%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 5%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 5%;
+    --primary: 0 0% 5%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 92%;
+    --secondary-foreground: 0 0% 5%;
+    --muted: 0 0% 55%;
+    --muted-foreground: 0 0% 35%;
+    --accent: 0 0% 90%;
+    --accent-foreground: 0 0% 5%;
+    --destructive: 0 84% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 82%;
+    --input: 0 0% 88%;
+    --ring: 0 0% 5%;
+
+    --theme-bg: #f5f5f5;
+    --theme-surface: rgba(0,0,0,0.03);
+    --theme-border: rgba(0,0,0,0.10);
+    --theme-border-hover: rgba(0,0,0,0.20);
+    --theme-text: #0a0a0a;
+    --theme-text-muted: rgba(0,0,0,0.55);
+    --theme-text-dim: rgba(0,0,0,0.30);
+    --theme-btn-primary-bg: #0a0a0a;
+    --theme-btn-primary-text: #ffffff;
+    --theme-scrollbar: #d0d0d0;
+    --theme-scrollbar-hover: #b0b0b0;
+    --theme-grid: rgba(0,0,0,0.08);
+    --theme-blob: rgba(0,0,0,0.04);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    background-color: var(--theme-bg);
+    color: var(--theme-text);
+    @apply antialiased overflow-x-hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  section[id] {
+    scroll-margin-top: 80px;
+  }
+  
+  ::selection {
+    background-color: rgba(128,128,128,0.2);
+  }
+}
+
+/* Theme-aware utility classes */
+.theme-bg       { background-color: var(--theme-bg); }
+.theme-surface  { background-color: var(--theme-surface); }
+.theme-border   { border-color: var(--theme-border); }
+.theme-text     { color: var(--theme-text); }
+.theme-muted    { color: var(--theme-text-muted); }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--theme-bg); }
+::-webkit-scrollbar-thumb { background: var(--theme-scrollbar); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--theme-scrollbar-hover); }
+
+/* Unified Background */
+.unified-bg {
+  position: relative;
+  background-color: var(--theme-bg);
+  transition: background-color 0.3s ease;
+}
+.unified-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 50% 50%, var(--theme-grid) 1px, transparent 1px);
+  background-size: 30px 30px;
+  mask-image: radial-gradient(circle at 50% 50%, black, transparent 80%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Card Contrast */
+.card-contrast {
+  background-color: var(--theme-surface);
+  border: 1px solid var(--theme-border);
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
+}
+.card-contrast:hover {
+  background-color: color-mix(in srgb, var(--theme-surface) 100%, transparent 0%);
+  border-color: var(--theme-border-hover);
+  transform: translateY(-2px);
+}
+
+/* Light theme overrides for Tailwind opacity classes */
+[data-theme="light"] .bg-black { background-color: var(--theme-bg) !important; }
+[data-theme="light"] .bg-white\/\[0\.02\] { background-color: rgba(0,0,0,0.03) !important; }
+[data-theme="light"] .bg-white\/\[0\.03\] { background-color: rgba(0,0,0,0.04) !important; }
+[data-theme="light"] .bg-white\/\[0\.04\] { background-color: rgba(0,0,0,0.05) !important; }
+[data-theme="light"] .bg-white\/5  { background-color: rgba(0,0,0,0.05) !important; }
+[data-theme="light"] .bg-white\/10 { background-color: rgba(0,0,0,0.08) !important; }
+[data-theme="light"] .bg-white\/20 { background-color: rgba(0,0,0,0.12) !important; }
+[data-theme="light"] .bg-white { background-color: #0a0a0a !important; }
+[data-theme="light"] .bg-black\/40 { background-color: rgba(255,255,255,0.7) !important; }
+[data-theme="light"] .bg-black\/70 { background-color: rgba(245,245,245,0.85) !important; }
+[data-theme="light"] .bg-black\/95 { background-color: rgba(245,245,245,0.97) !important; }
+
+[data-theme="light"] .text-white  { color: #0a0a0a !important; }
+[data-theme="light"] .text-white\/80 { color: rgba(0,0,0,0.80) !important; }
+[data-theme="light"] .text-white\/70 { color: rgba(0,0,0,0.70) !important; }
+[data-theme="light"] .text-white\/60 { color: rgba(0,0,0,0.60) !important; }
+[data-theme="light"] .text-white\/50 { color: rgba(0,0,0,0.50) !important; }
+[data-theme="light"] .text-white\/40 { color: rgba(0,0,0,0.40) !important; }
+[data-theme="light"] .text-white\/30 { color: rgba(0,0,0,0.30) !important; }
+[data-theme="light"] .text-white\/20 { color: rgba(0,0,0,0.20) !important; }
+[data-theme="light"] .text-black     { color: #ffffff !important; }
+
+[data-theme="light"] .border-white\/5  { border-color: rgba(0,0,0,0.06) !important; }
+[data-theme="light"] .border-white\/10 { border-color: rgba(0,0,0,0.10) !important; }
+[data-theme="light"] .border-white\/20 { border-color: rgba(0,0,0,0.18) !important; }
+[data-theme="light"] .border-white\/30 { border-color: rgba(0,0,0,0.25) !important; }
+
+/* Primary button in light mode: dark bg, white text */
+[data-theme="light"] .bg-white.text-black {
+  background-color: #0a0a0a !important;
+  color: #ffffff !important;
+}
+
+/* Blob/glow in light mode */
+[data-theme="light"] .bg-white\/10.rounded-full { background-color: rgba(0,0,0,0.04) !important; }
+
+/* Mobile */
+@media (max-width: 640px) {
+  .section-padding { @apply py-12 px-6; }
+}
+
+/* Accent utils */
+.accent-detail-blue   { @apply text-blue-500; }
+.accent-detail-purple { @apply text-purple-500; }
+.accent-detail-cyan   { @apply text-cyan-400; }
+.accent-detail-pink   { @apply text-pink-500; }
+.border-accent-blue   { @apply border-blue-500/30; }
+.border-accent-purple { @apply border-purple-500/30; }
+.border-accent-cyan   { @apply border-cyan-400/30; }
+.border-accent-pink   { @apply border-pink-500/30; }
+.gradient-accent-blue   { @apply bg-gradient-to-r from-blue-500/20 to-transparent; }
+.gradient-accent-purple { @apply bg-gradient-to-r from-purple-500/20 to-transparent; }
+.gradient-accent-cyan   { @apply bg-gradient-to-r from-cyan-400/20 to-transparent; }
+.gradient-accent-pink   { @apply bg-gradient-to-r from-pink-500/20 to-transparent; }
+
+/* ===== Fluid animations ===== */
+
+/* Section fade-in on scroll via Intersection Observer */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* Smooth hover scale for cards */
+.card-contrast {
+  transform-origin: center;
+}
+
+/* Smoother scrolling across the board */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+/* Better font rendering */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Prevent layout shift on scrollbar appear */
+html {
+  scrollbar-gutter: stable;
+}
